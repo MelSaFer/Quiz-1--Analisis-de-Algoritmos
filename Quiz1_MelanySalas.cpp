@@ -1,5 +1,5 @@
-/*Quiz 1
-Instituto Tecnologico de Costa Rica.
+/*Quiz 1 y 2
+Instituto Tecnológico de Costa Rica.
 Melany Dahiana Salas Fernandez.
 Carné: 2021121147
 */
@@ -14,19 +14,11 @@ using namespace std;
 //ENUM PARA TIPOS DE MEDIA
 enum tipoMedia {video, audio, foto};
 
-//ESTRUCTURAS-------------------------------------------------------------------------------------------------------------------------
-//Estructura para la  media, donde cada media de la noticia digital tiene un url y un tipo
-//struct Media{
-//    string url;
-//    tipoMedia type;
-//    string infoAdicional;
-//};
 
 //CLASES------------------------------------------------------------------------------------------------------------------------------
 //____________________________________________________________________________________________________________________________________
-//Clase Noticia paper
-//Hereda de clase noticia
-//Atributos: Ruta a archivo para la foto y los que hereda de la clase madre
+//Clase TMedia
+//Atributos: un url, un tipo e informacion adicional(puede ser autor, fechas, descripciones...)
 class TMedia{
     private:
         string url;
@@ -86,7 +78,6 @@ class TNoticia {
         string title;
         string fecha;
         string reportero;
-    
     public:
         //Constructor
         TNoticia(){};
@@ -96,7 +87,7 @@ class TNoticia {
             title = nTitle;
             fecha = nFecha;
             reportero = nReportero;
-        };
+        }
 
         // SETS Y GETS
         void setTitle( string nTitle){
@@ -122,7 +113,6 @@ class TNoticia {
         string getReportero(){
             return reportero;
         }
-        
         //Metodo abstracto ToString()-getInfo()
         virtual void getInfo(){};
 } ;
@@ -183,7 +173,6 @@ class TnoticiaRadio : public TNoticia {
         //Metodo toString
         void getInfo(){
             cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tLink para Audio de noticia: " << linkAudio <<endl;
-            
         }
 
 };
@@ -248,14 +237,17 @@ int main(){
     //Instaciaciones y llamados a constructores----------------------------------------------------------------------------------------------------
 
     //Creacion del objeto de tipo Noticia Paper
+    cout << "Creando objeto de tipo noticia paper..."<< endl;
     TnoticiaPaper noticia1("El caos en la vacunación multiplica las renuncias por miedo", \
     "10/04/2021", "El Mundo", "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2021/04/09/16180028369004.png");
 
     //Creacion del objeto de tipo Noticia Radio
+    cout << "Creando objeto de tipo noticia Radio..."<< endl;
     TnoticiaRadio noticia2("Fin de semana violento: 10 personas fueron asesinadas", "28/2/2022", "Dudly Lynch",\
      "https://www.teletica.com/sucesos/fin-de-semana-violento-10-personas-fueron-asesinadas_306340");
 
     //Creacion del objeto de tipo Noticia Digital
+    cout << "Creando objeto de tipo noticia Digital..."<< endl;
     mediaP= agregarMedia(mediaP, "https://ichef.bbci.co.uk/news/800/cpsprodpb/128D3/production/_123478957_index_4_police_station_kharkiv_ukraine_getty.jpg.webp", foto, "From GETTY IMAGES ");
     mediaP= agregarMedia(mediaP, "https://ichef.bbci.co.uk/news/800/cpsprodpb/2D39/production/_123477511_ukraine_cities_mundo_2x640-nc.png.webp", foto, "Map");
     mediaP= agregarMedia(mediaP, "https://www.bbc.com/mundo/av-embeds/noticias-internacional-60578483", video, "Descripcion: Un misil golpeó un edificio de gobierno de Járkiv, la segunda ciudad de Ucrania. ");
@@ -266,13 +258,12 @@ int main(){
     adminNoticias.push_back(&noticia3);
  
 
-   cout<< "Noticias en la lista de noticias: "<< endl;
+   cout<< "\nNoticias en la lista de noticias: "<< endl;
     for(int i=0; i < adminNoticias.size(); i++){
         cout<<"-----------------------------------------------------------------------------------------------------------------------------------"<< endl;
         adminNoticias[i]->getInfo();
         cout<<"\n";
     } 
-
 
     return 0;
 }
