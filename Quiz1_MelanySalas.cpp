@@ -11,12 +11,15 @@ Carné: 2021121147
 
 using namespace std;
 
+//ENUM PARA TIPOS DE MEDIA
 enum tipoMedia {video, audio, foto};
 
 //ESTRUCTURAS-------------------------------------------------------------------------------------------------------------------------
+//Estructura para la  media, donde cada media de la noticia digital tiene un url y un tipo
 struct Media{
     string url;
     tipoMedia type;
+    string infoAdicional;
 };
 
 //CLASES------------------------------------------------------------------------------------------------------------------------------
@@ -33,6 +36,7 @@ class TNoticia {
         //Constructor
         TNoticia(){};
 
+        //Costructor sobrecargado
         TNoticia( string nTitle, string nFecha, string nReportero){
             title = nTitle;
             fecha = nFecha;
@@ -64,15 +68,9 @@ class TNoticia {
             return reportero;
         }
         
-        //Metodo ToString()
-        //void getInfo(){
-        //    cout << "Titulo: " << title << " Fecha: " << fecha << " Reportero: " << reportero<<endl;
-       // }
+        //Metodo abstracto ToString()-getInfo()
         virtual void getInfo(){};
-
 } ;
-
-
 
 //____________________________________________________________________________________________________________________________________
 //Clase Noticia paper
@@ -82,7 +80,8 @@ class TnoticiaPaper : public TNoticia {
     private:
         string linkFoto;
     public:
-        
+        //Constructor
+        //Llama al constructor de la clase madre y tambien asigna el atributo que no corresponde a la clase madre
         TnoticiaPaper(string nTitle, string nFecha, string nReportero, string nLink): TNoticia(nTitle,nFecha,nReportero){
             linkFoto = nLink;
         }
@@ -98,7 +97,7 @@ class TnoticiaPaper : public TNoticia {
 
         //Metodo toString
         void getInfo(){
-            cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tLink: " << linkFoto <<endl;
+            cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tLink para foto de noticia: " << linkFoto <<endl;
         }
 
 };
@@ -111,7 +110,8 @@ class TnoticiaRadio : public TNoticia {
     private:
         string linkAudio;
     public:
-        
+        //Constructor
+        //Llama al constructor de la clase madre y tambien asigna el atributo que no corresponde a la clase madre
         TnoticiaRadio(string nTitle, string nFecha, string nReportero, string nLink): TNoticia(nTitle,nFecha,nReportero){
             linkAudio = nLink;
         }
@@ -127,7 +127,7 @@ class TnoticiaRadio : public TNoticia {
 
         //Metodo toString
         void getInfo(){
-            cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tLink para Audio: " << linkAudio <<endl;
+            cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tLink para Audio de noticia: " << linkAudio <<endl;
             
         }
 
@@ -141,7 +141,8 @@ class TnoticiaDigital : public TNoticia {
     private:
         vector<Media> media;
     public:
-        
+        //Constructor
+        //Llama al constructor de la clase madre y tambien asigna el atributo que no corresponde a la clase madre
         TnoticiaDigital(string nTitle, string nFecha, string nReportero, vector<Media> nMedia): TNoticia(nTitle,nFecha,nReportero){
             media = nMedia;
         }
@@ -156,16 +157,18 @@ class TnoticiaDigital : public TNoticia {
         }
 
         //Metodo para agregar media a la noticia
-        void agregarMedia(string url_media, tipoMedia type){
+        void agregarMedia(string url_media, tipoMedia type, string nInfoA){
             Media newMedia;
             newMedia.type = type;
             newMedia.url = url_media;
+            newMedia.infoAdicional = nInfoA;
             media.push_back(newMedia);
         }
 
         //Metodo toString
         void getInfo(){
             cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tMedia: \n";
+            //Ciclo for para desplegar el contenido del vector en la lista de media
             for(int i = 0; i< media.size(); i++){
                 cout<< "\t\tTipo: ";
                 if( media[i].type == 0){
@@ -174,33 +177,27 @@ class TnoticiaDigital : public TNoticia {
                     cout << "Audio";
                 } else
                     cout << "Foto";
-                cout << "\tDireccion URL: "  << media[i].url << endl;
+                cout << "\tDireccion URL: "  << media[i].url << "\n\t\t\tInformacion Adicional: " << media[i].infoAdicional<< endl;
+
             }
         }
-
 };
 
 
 //FUNCIONES-------------------------------------------------------------------------------------------------------------------------
-//Funcion para agregar noticias al vector
-//Entradas: Recibe una notica de tipo TNoticia por valor y un adminNoticias por referencia 
-//Salidas: None
-void agregarNoticias(TNoticia noticia, vector<TNoticia> &adminNoticias ){
-    int lim = adminNoticias.size();
-    adminNoticias.push_back(noticia);
-}
-
-//Metodo para agregar media a la noticia
-vector<Media> agregarMedia(vector<Media> media, string url_media, tipoMedia type){
+//Funcion para agregar media a la noticia
+//Entradas: Recibe un vector con media, un string con el url y un tipo 
+//Salidas: Retorna el vector modificado
+vector<Media> agregarMedia(vector<Media> media, string url_media, tipoMedia type, string nInfoA){
     Media newMedia;
     newMedia.type = type;
     newMedia.url = url_media;
+    newMedia.infoAdicional = nInfoA;
     media.push_back(newMedia);
     return media;
 }
 
 //MAIN-------------------------------------------------------------------------------------------------------------------------------
-
 int main(){
     //vector para media de noticias digitales
     vector<Media> mediaP;
@@ -219,9 +216,10 @@ int main(){
      "https://www.teletica.com/sucesos/fin-de-semana-violento-10-personas-fueron-asesinadas_306340");
 
     //Creacion del objeto de tipo Noticia Digital
-    mediaP= agregarMedia(mediaP, "https://ichef.bbci.co.uk/news/800/cpsprodpb/1795F/production/_123470669_mediaitem123462618.jpg.webp", foto);
-    mediaP= agregarMedia(mediaP, "https://ichef.bbci.co.uk/news/800/cpsprodpb/E107/production/_123470675_gettyimages-1238846907.jpg.webp", foto);
-    TnoticiaDigital noticia3("Rusia invade Ucrania: el cerco ruso se estrecha sobre Kiev donde el ataque a una torre de TV deja 5 muertos", \
+    mediaP= agregarMedia(mediaP, "https://ichef.bbci.co.uk/news/800/cpsprodpb/128D3/production/_123478957_index_4_police_station_kharkiv_ukraine_getty.jpg.webp", foto, "From GETTY IMAGES ");
+    mediaP= agregarMedia(mediaP, "https://ichef.bbci.co.uk/news/800/cpsprodpb/2D39/production/_123477511_ukraine_cities_mundo_2x640-nc.png.webp", foto, "Map");
+    mediaP= agregarMedia(mediaP, "https://www.bbc.com/mundo/av-embeds/noticias-internacional-60578483", video, "Descripcion: Un misil golpeó un edificio de gobierno de Járkiv, la segunda ciudad de Ucrania. ");
+    TnoticiaDigital noticia3("Rusia y Ucrania: Moscú lanza un asalto aéreo sobre Járkiv, estrecha el cerco sobre Kiev y reivindica el control de Jersón", \
     "01/03/2022", "BBC News Mundo", mediaP);
 
     adminNoticias={&noticia1,&noticia2};
@@ -230,13 +228,11 @@ int main(){
 
    cout<< "Noticias en la lista de noticias: "<< endl;
     for(int i=0; i < adminNoticias.size(); i++){
+        cout<<"-----------------------------------------------------------------------------------------------------------------------------------"<< endl;
         adminNoticias[i]->getInfo();
         cout<<"\n";
     } 
 
-    for(int i2 = adminNoticias.size()-1; i2 >= 0; i2--){
-        delete(adminNoticias[i2]);
-    }
 
     return 0;
 }
