@@ -16,13 +16,68 @@ enum tipoMedia {video, audio, foto};
 
 //ESTRUCTURAS-------------------------------------------------------------------------------------------------------------------------
 //Estructura para la  media, donde cada media de la noticia digital tiene un url y un tipo
-struct Media{
-    string url;
-    tipoMedia type;
-    string infoAdicional;
-};
+//struct Media{
+//    string url;
+//    tipoMedia type;
+//    string infoAdicional;
+//};
 
 //CLASES------------------------------------------------------------------------------------------------------------------------------
+//____________________________________________________________________________________________________________________________________
+//Clase Noticia paper
+//Hereda de clase noticia
+//Atributos: Ruta a archivo para la foto y los que hereda de la clase madre
+class TMedia{
+    private:
+        string url;
+        tipoMedia type;
+        string infoAdicional;
+    public:
+        //Metodo constructor
+        TMedia(string nUrl, tipoMedia nType, string nInfo){
+            url = nUrl;
+            type = nType;
+            infoAdicional = nInfo;
+        };
+
+        //SETTERS Y GETTERS
+        void setUrl(string nUrl){
+            url = nUrl;
+        }
+
+        string getUrl(){
+            return url;
+        }
+
+        void setType(tipoMedia ntype){
+            type = ntype;
+        }
+
+        tipoMedia getType(){
+            return type;
+        }
+
+        void setInfo(string nInfo){
+            infoAdicional = nInfo;
+        }
+
+        string getInfo(){
+            return infoAdicional;
+        }
+
+        void toString(){
+            cout<< "\t\tTipo: ";
+            if( type == 0){
+                cout << "Video";
+            } else if(type == 1){
+                cout << "Audio";
+            } else
+                cout << "Foto";
+            cout << "\tDireccion URL: "  << url << "\n\t\t\tInformacion Adicional: " << infoAdicional<< endl;
+        }
+
+};
+
 //____________________________________________________________________________________________________________________________________
 //Clase Noticia
 //Atributos: titulo, fecha y reportero
@@ -139,30 +194,27 @@ class TnoticiaRadio : public TNoticia {
 //Atributos: Ruta a archivo para la foto y los que hereda de la clase madre
 class TnoticiaDigital : public TNoticia {
     private:
-        vector<Media> media;
+        vector<TMedia> media;
     public:
         //Constructor
         //Llama al constructor de la clase madre y tambien asigna el atributo que no corresponde a la clase madre
-        TnoticiaDigital(string nTitle, string nFecha, string nReportero, vector<Media> nMedia): TNoticia(nTitle,nFecha,nReportero){
+        TnoticiaDigital(string nTitle, string nFecha, string nReportero, vector<TMedia> nMedia): TNoticia(nTitle,nFecha,nReportero){
             media = nMedia;
         }
 
         //SETTERS Y GETTERS
-        void setLink(vector<Media> nMedia){
+        void setLink(vector<TMedia> nMedia){
             media = nMedia;
         }
 
-        vector<Media> getMedia(){
+        vector<TMedia> getMedia(){
             return media;
         }
 
         //Metodo para agregar media a la noticia
         void agregarMedia(string url_media, tipoMedia type, string nInfoA){
-            Media newMedia;
-            newMedia.type = type;
-            newMedia.url = url_media;
-            newMedia.infoAdicional = nInfoA;
-            media.push_back(newMedia);
+            TMedia media1(url_media, type, nInfoA );
+            media.push_back(media1);
         }
 
         //Metodo toString
@@ -170,37 +222,25 @@ class TnoticiaDigital : public TNoticia {
             cout << "Titulo: " << title << "\n\tFecha: " << fecha << "\n\tReportero: " << reportero << "\n\tMedia: \n";
             //Ciclo for para desplegar el contenido del vector en la lista de media
             for(int i = 0; i< media.size(); i++){
-                cout<< "\t\tTipo: ";
-                if( media[i].type == 0){
-                    cout << "Video";
-                } else if(media[i].type == 1){
-                    cout << "Audio";
-                } else
-                    cout << "Foto";
-                cout << "\tDireccion URL: "  << media[i].url << "\n\t\t\tInformacion Adicional: " << media[i].infoAdicional<< endl;
-
+                media[i].toString();
             }
         }
 };
-
 
 //FUNCIONES-------------------------------------------------------------------------------------------------------------------------
 //Funcion para agregar media a la noticia
 //Entradas: Recibe un vector con media, un string con el url y un tipo 
 //Salidas: Retorna el vector modificado
-vector<Media> agregarMedia(vector<Media> media, string url_media, tipoMedia type, string nInfoA){
-    Media newMedia;
-    newMedia.type = type;
-    newMedia.url = url_media;
-    newMedia.infoAdicional = nInfoA;
-    media.push_back(newMedia);
+vector<TMedia> agregarMedia(vector<TMedia> media, string url_media, tipoMedia type, string nInfoA){
+    TMedia media1(url_media, type, nInfoA );
+    media.push_back(media1);
     return media;
 }
 
 //MAIN-------------------------------------------------------------------------------------------------------------------------------
 int main(){
     //vector para media de noticias digitales
-    vector<Media> mediaP;
+    vector<TMedia> mediaP;
 
     //Vector para almacenar los objetos 
     vector<TNoticia*> adminNoticias;
