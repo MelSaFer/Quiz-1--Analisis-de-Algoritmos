@@ -3,6 +3,10 @@ Quiz 1 Melany Salas Fernández
 
 Prueba de ejecucion
 
+Creando objeto de tipo noticia paper...
+Creando objeto de tipo noticia Radio...
+Creando objeto de tipo noticia Digital...
+
 Noticias en la lista de noticias:
 -----------------------------------------------------------------------------------------------------------------------------------
 Titulo: El caos en la vacunaci├│n multiplica las renuncias por miedo
